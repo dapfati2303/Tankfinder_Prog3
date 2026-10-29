@@ -1,7 +1,7 @@
 """Projekt INformation zum Tankstellenfinder"""
 
 
-class application:
+class Application:
     def __init__(self, name, version, description, developers, maintainer, tags):
         self.name = name
         self.version = version
@@ -17,7 +17,7 @@ class application:
                 f"Tags: {', '.join(self.tags)}")
 
 
-APP = application(
+APP = Application(
     name="Tankfinder",
     version="0.1.0",
     description="Günstigste Tankstellen im Umkreis finden und Route anzeigen",
