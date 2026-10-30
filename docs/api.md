@@ -33,7 +33,7 @@ Sortiert nach Preis der gewählten Sorte, günstigste zuerst.
             "lng": 10.617,
             "e5": 1.859,
             "e10": 1.799,
-            "diesel": 1.799,
+            "diesel": 1.729,
             "is_open": true
         },
         {
@@ -64,7 +64,7 @@ Keine Treffer: `"count": 0` und `"stations": []` (kein Fehler).
 ## `GET /api/info`
 
 ```json
-{ "status": "Tankfinder 0.1.0: Günstigste Tankstellen im Umkreis funden und Route anzeigen..." }
+{ "status": "Tankfinder 0.1.0: Günstigste Tankstellen im Umkreis finden und Route anzeigen..." }
 ```
 
 ## Testwerte (`data/tankstellen.csv`)
