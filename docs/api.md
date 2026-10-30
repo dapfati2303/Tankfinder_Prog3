@@ -1,8 +1,8 @@
 # API: Tankstellen
 
-## 'GET /api/stations'
+## `GET /api/stations` 
 
-Liefert Tankstellen aus der aktuellen Datenquelle (Sprint 2: 'data/tankstellen.csv').
+Liefert Tankstellen aus der aktuellen Datenquelle (Sprint 2: `data/tankstellen.csv`).
 
 ### Paramter
 
@@ -12,13 +12,13 @@ Liefert Tankstellen aus der aktuellen Datenquelle (Sprint 2: 'data/tankstellen.c
 | `open_only` | true/false | nein    | `false`  | nur geöffnete Tankstellen               |
 | `max_price` | Zahl       | nein    | –        | nur Tankstellen bis zu diesem Preis (€) |
 
-Bsp.: 'api/stations?fuel=e5&open_only=true&max_price=1.87'
+Bsp.: `/api/stations?fuel=e5&open_only=true&max_price=1.87`
 
 ### Antwort (Status200)
 
 Sortiert nach Preis der gewählten Sorte, günstigste zuerst.
 
-'''json
+```json
 {
     "fuel": "e5",
     "count": 2,
@@ -51,21 +51,21 @@ Sortiert nach Preis der gewählten Sorte, günstigste zuerst.
         }
     ]
 }
-'''
+```
 
-Keine Treffer: '"count": 0' und '"stations": []' (kein Fehler).
+Keine Treffer: `"count": 0` und `"stations": []` (kein Fehler).
 
 ### Fehler (Status 400)
 
-'''json
+```json
 { "error": "Unbekannte Spritsorte: lpg" }
-'''
+```
 
-## 'GET /api/info'
+## `GET /api/info`
 
-'''json
+```json
 { "status": Tankfinder 0.1.0: Günstigste Tankstellen im Umkreis funden und Route anzeigen..." }
-'''
+```
 
 ## Testwerte (`data/tankstellen.csv`)
 
