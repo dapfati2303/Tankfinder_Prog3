@@ -25,23 +25,23 @@ Sortiert nach Preis der gewählten Sorte, günstigste zuerst.
     "stations": [
         {
             "id": 8,
-            "name": "BAyWa Marktoberdorf",
+            "name": "BayWa Marktoberdorf",
             "brand": "BayWa",
             "street": "Kemptener Str. 40",
             "city": "Marktoberdorf",
             "lat": 47.778,
             "lng": 10.617,
-            "e5": 1.858,
-            "e10": 1.799"
+            "e5": 1.859,
+            "e10": 1.799,
             "diesel": 1.799,
             "is_open": true
         },
         {
-            "id". 7,
+            "id": 7,
             "name": "Avia Pfronten",
             "brand": "Avia",
             "street": "Tiroler Str. 8",
-            "coity": "Pfronten",
+            "city": "Pfronten",
             "lat": 47.582,
             "lng": 10.554,
             "e5": 1.869,
@@ -64,7 +64,7 @@ Keine Treffer: `"count": 0` und `"stations": []` (kein Fehler).
 ## `GET /api/info`
 
 ```json
-{ "status": Tankfinder 0.1.0: Günstigste Tankstellen im Umkreis funden und Route anzeigen..." }
+{ "status": "Tankfinder 0.1.0: Günstigste Tankstellen im Umkreis funden und Route anzeigen..." }
 ```
 
 ## Testwerte (`data/tankstellen.csv`)
