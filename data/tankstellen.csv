@@ -1,0 +1,11 @@
+id,name,brand,street,city,lat,lng,e5,e10,diesel,is_open
+1,V-Markt Füssen,V-Markt,Kemptener Str. 107,Füssen,47.569,10.671,1.899,1.839,1.759,True
+2,JET Füssen,JET,Kemptener Str. 34,Füssen,47.569,10.688,1.909,1.849,1.769,True
+3,Agip Kempten,Agip,Lindauer Str. 50,Kempten,47.726,10.314,1.879,1.819,1.749,True
+4,Aral Kaufbeuren,Aral,Augsburger Str. 12,Kaufbeuren,47.880,10.622,1.929,1.869,1.789,True
+5,Shell Memmingen,Shell,Allgäuer Str. 3,Memmingen,47.984,10.181,1.949,1.889,1.809,True
+6,Esso Sonthofen,Esso,Hindelanger Str. 20,Sonthofen,47.515,10.282,1.919,1.859,1.779,False
+7,Avia Pfronten,Avia,Tiroler Str. 8,Pfronten,47.582,10.554,1.869,1.809,1.739,True
+8,BayWa Marktoberdorf,BayWa,Kemptener Str. 40,Marktoberdorf,47.778,10.617,1.859,1.799,1.729,True
+9,OMV Immenstadt,OMV,Kemptener Str. 15,Immenstadt,47.560,10.220,1.939,1.879,1.799,True
+10,Total Oberstdorf,Total,Sonthofener Str. 2,Oberstdorf,47.410,10.279,1.989,1.929,1.849,False
