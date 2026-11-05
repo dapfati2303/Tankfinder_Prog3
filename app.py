@@ -19,7 +19,9 @@ CSV_PATH = BASE_DIR / "data" / "tankstellen.csv"
 
 ERLAUBTE_FUELS = ("e5", "e10", "diesel")
 
-app = Flask(__name__)
+# Alle Dateien aus frontend/ (CSS, JS, Bilder ...) direkt unter / ausliefern,
+# z. B. frontend/css/style.css -> http://localhost:5000/css/style.css
+app = Flask(__name__, static_folder=str(FRONTEND_DIR), static_url_path="")
 app.json.ensure_ascii = False  # Umlaute im JSON lesbar ausgeben
 
 
