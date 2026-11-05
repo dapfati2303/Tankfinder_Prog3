@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tankfinder</title>
+    <style>
+        body { font-family: system-ui, sans-serif; max-width: 900px; margin: 2rem auto; padding: 0 1rem; }
+        form { display: flex; gap: 1rem; flex-wrap: wrap; align-items: end; margin-bottom: 1rem; }
+        label { display: flex; flex-direction: column; font-size: .9rem; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { text-align: left; padding: .4rem .6rem; border-bottom: 1px solid #ddd; }
+        .fehler { color: #b00020; }
+        #info { color: #666; font-size: .85rem; white-space: pre-line; }
+    </style>
+</head>
+<body>
+    <h1>Tankfinder</h1>
+    <p id="info"></p>
+
+    <form id="filter">
+        <label>Sorte
+            <select name="fuel">
+                <option value="e5">Super E5</option>
+                <option value="e10">Super E10</option>
+                <option value="diesel">Diesel</option>
+            </select>
+        </label>
+        <label>Höchstpreis (€)
+            <input name="max_price" type="number" step="0.01" placeholder="beliebig">
+        </label>
+        <label><span>&nbsp;</span>
+            <span><input name="open_only" type="checkbox"> nur geöffnete</span>
+        </label>
+        <button type="submit">Suchen</button>
+    </form>
+
+    <p id="ergebnis"></p>
+    <table>
+        <thead><tr><th>Name</th><th>Ort</th><th>Straße</th><th>Preis</th><th>Geöffnet</th></tr></thead>
+        <tbody id="liste"></tbody>
+    </table>
+
+    <script>
+        const form = document.getElementById("filter");
+
+        fetch("/api/info")
+            .then(r => r.json())
+            .then(d => document.getElementById("info").textContent = d.status);
+
+        async function laden() {
+            const params = new URLSearchParams();
+            params.set("fuel", form.fuel.value);
+            params.set("open_only", form.open_only.checked ? "true" : "false");
+            if (form.max_price.value) params.set("max_price", form.max_price.value);
+
+            const antwort = await fetch("/api/stations?" + params);
+            const daten = await antwort.json();
+            const ergebnis = document.getElementById("ergebnis");
+            const liste = document.getElementById("liste");
+            liste.innerHTML = "";
+
+            if (!antwort.ok) {
+                ergebnis.className = "fehler";
+                ergebnis.textContent = daten.error;
+                return;
+            }
+            ergebnis.className = "";
+            ergebnis.textContent = `${daten.count} Tankstelle(n) gefunden`;
+
+            for (const s of daten.stations) {
+                const zeile = document.createElement("tr");
+                for (const wert of [s.name, s.city, s.street,
+                                    s[daten.fuel].toFixed(3) + " €",
+                                    s.is_open ? "ja" : "nein"]) {
+                    const zelle = document.createElement("td");
+                    zelle.textContent = wert;
+                    zeile.appendChild(zelle);
+                }
+                liste.appendChild(zeile);
+            }
+        }
+
+        form.addEventListener("submit", e => { e.preventDefault(); laden(); });
+        laden();
+    </script>
+</body>
+</html>
