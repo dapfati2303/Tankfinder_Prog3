@@ -38,9 +38,9 @@ class StationList:
 
     def open_only(self) -> "StationList":
         """Gibt eine neue StationList nur mit geöffneten Tankstellen zurück."""
-        if self.data.empty or "isOpen" not in self.data.columns:
+        if self.data.empty or "is_open" not in self.data.columns:
             return StationList(name=f"{self.name} - open only")
-        filtered_df = self.data[self.data["isOpen"] == True].copy()
+        filtered_df = self.data[self.data["is_open"] == True].copy()
         return StationList(data=filtered_df, name=f"{self.name} - open only")
 
     def below_price(self, fuel: str, limit: float) -> "StationList":
@@ -48,7 +48,7 @@ class StationList:
         if self.data.empty or fuel not in self.data.columns:
             return StationList(name=f"{self.name} - below {limit}")
         valid_df = self.data.dropna(subset=[fuel])
-        filtered_df = valid_df[valid_df[fuel] < limit].copy()
+        filtered_df = valid_df[valid_df[fuel] <= limit].copy()
         return StationList(data=filtered_df, name=f"{self.name} - below {limit}")
 
     def sorted_by_price(self, fuel: str) -> "StationList":
