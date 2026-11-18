@@ -13,6 +13,8 @@ from flask import Flask, jsonify, request, send_from_directory
 
 from tankfinder.application import APP
 
+from tankfinder.stations import StationList
+
 BASE_DIR = Path(__file__).resolve().parent
 FRONTEND_DIR = BASE_DIR / "frontend"
 CSV_PATH = BASE_DIR / "data" / "tankstellen.csv"
@@ -66,7 +68,7 @@ def info():
 
 @app.route("/api/stations")
 def stations():
-    """Tankstellen, gefiltert nach fuel, open_only und max_price (siehe docs/api.md)."""
+    """Tankstellen, gefiltert nach fuel, open_only und max_price über StationList."""
     # --- Parameter prüfen ---
     fuel = request.args.get("fuel", "e5").strip().lower()
     if fuel not in ERLAUBTE_FUELS:
@@ -88,24 +90,24 @@ def stations():
         if max_price <= 0:
             return fehler("max_price muss größer als 0 sein")
 
-    # --- Daten filtern und sortieren ---
-    df = lade_stationen()
-    df = df[df[fuel].notna()]
+    # --- Über StationList filtern und sortieren ---
+    stations_list = StationList.from_csv(str(CSV_PATH))
+    
     if open_only:
-        df = df[df["is_open"]]
+        stations_list = stations_list.open_only()
+        
     if max_price is not None:
-        df = df[df[fuel] <= max_price]
-    df = df.sort_values(fuel)
+        stations_list = stations_list.below_price(fuel, max_price)
+        
+    stations_list = stations_list.sorted_by_price(fuel)
 
-    # über to_json, damit Zahlen/Wahrheitswerte/NaN sauber in JSON umgewandelt werden
-    stationen = json.loads(df.to_json(orient="records", force_ascii=False))
+    stationen = stations_list.to_records()
 
     return jsonify({
         "fuel": fuel,
         "count": len(stationen),
         "stations": stationen,
     })
-
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000)
