@@ -4,6 +4,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Tankfinder</title>
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+        crossorigin=""
+    >
+
     <style>
         body { font-family: system-ui, sans-serif; max-width: 900px; margin: 2rem auto; padding: 0 1rem; }
         form { display: flex; gap: 1rem; flex-wrap: wrap; align-items: end; margin-bottom: 1rem; }
@@ -12,6 +19,7 @@
         th, td { text-align: left; padding: .4rem .6rem; border-bottom: 1px solid #ddd; }
         .fehler { color: #b00020; }
         #info { color: #666; font-size: .85rem; white-space: pre-line; }
+        #karte { height: 500px; margin-bottom: 1rem; }
     </style>
 </head>
 <body>
@@ -35,14 +43,30 @@
         <button type="submit">Suchen</button>
     </form>
 
+    <div id="karte"></div>
+
     <p id="ergebnis"></p>
     <table>
         <thead><tr><th>Name</th><th>Ort</th><th>Straße</th><th>Preis</th><th>Geöffnet</th></tr></thead>
         <tbody id="liste"></tbody>
     </table>
 
+    <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""
+    ></script>
+
     <script>
         const form = document.getElementById("filter");
+        const karte = L.map("karte").setView([47.65, 10.55], 9);
+
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+            maxZoom: 19,
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(karte);
+
+        const markerEbene =L.layerGroup().addTo(karte);
 
         fetch("/api/info")
             .then(r => r.json())
@@ -59,6 +83,7 @@
             const ergebnis = document.getElementById("ergebnis");
             const liste = document.getElementById("liste");
             liste.innerHTML = "";
+            markerEbene.clearLayers();
 
             if (!antwort.ok) {
                 ergebnis.className = "fehler";
@@ -69,6 +94,24 @@
             ergebnis.textContent = `${daten.count} Tankstelle(n) gefunden`;
 
             for (const s of daten.stations) {
+                const marker = L.marker([s.lat, s.lng]);
+
+                const popup = document.createElement("div");
+                const name = document.createElement("strong");
+                name.textContent = s.name;
+                popup.appendChild(name);
+
+                popup.appendChild(document.createElement("br"));
+                popup.appendChild(
+                    document.createTextNode(`${s.street}, ${s.city}`)
+                );
+                popup.appendChild(document.createElement("br"));
+                popup.appendChild(
+                    document.createTextNode(`${s[daten.fuel].toFixed(3)} € / Liter`)
+                );
+                marker.bindPopup(popup);
+                markerEbene.addLayer(marker);
+
                 const zeile = document.createElement("tr");
                 for (const wert of [s.name, s.city, s.street,
                                     s[daten.fuel].toFixed(3) + " €",
