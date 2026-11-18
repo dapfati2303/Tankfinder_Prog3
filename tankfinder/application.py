@@ -19,7 +19,7 @@ class Application:
 
 APP = Application(
     name="Tankfinder",
-    version="0.1.0",
+    version="0.2.0",
     description="Günstigste Tankstellen im Umkreis finden und Route anzeigen",
     developers=["Paul Thurner", "Adrian Pfatischer", "Julian Fischer", "Raphael Goester"],
     maintainer="Paul Thurner",
